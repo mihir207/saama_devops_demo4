@@ -20,7 +20,7 @@ jobs:
     container: 
       image: openjdk:24-slim-bullseye
     steps:
-    # - uses: actions/checkout@v4
+    - uses: actions/checkout@v4
     # - name: Install Java
     #   uses: actions/setup-java@v3
     #   with:
