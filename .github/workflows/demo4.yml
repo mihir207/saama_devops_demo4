@@ -6,7 +6,7 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Upload Python Package
+name: Upload Java Package
 
 on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
@@ -14,17 +14,18 @@ on:
     branches: [ "main" ]
 
 jobs:
-  deploy:
+  compile:
     name: Set up java class 
     runs-on: ubuntu-latest
-    #container: openjdk:24-slim-bullseye
+    container: 
+      image: openjdk:24-slim-bullseye
     steps:
-    - uses: actions/checkout@v4
-    - name: Install Java
-      uses: actions/setup-java@v3
-      with:
-        java-version: 17
-        distribution: 'temurin'
+    # - uses: actions/checkout@v4
+    # - name: Install Java
+    #   uses: actions/setup-java@v3
+    #   with:
+    #     java-version: 17
+    #     distribution: 'temurin'
     - name: Set up Java class
       run: |
         echo Set up Java class
@@ -34,21 +35,21 @@ jobs:
     - name: Upload artifact java class  
       uses: actions/upload-artifact@v4
       with:
-        name: dist-without-markdown
+        name: hello-java
         path: |
           Hello.class
-          dist
-          !dist/**/*.md
 
   run:
     name: Run Java script
-    needs: deploy
+    needs: compile
+    container: 
+      image: openjdk:24-slim-bullseye
     runs-on: ubuntu-latest
     steps:
     - name: Download artifact java class 
       uses: actions/download-artifact@v4
       with:
-          name: dist-without-markdown
+          name: hello-java
     - name: Run java class
       run: |
         dir
