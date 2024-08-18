@@ -1,0 +1,55 @@
+# This workflow will upload a Python Package using Twine when a release is created
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python#publishing-to-package-registries
+
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: Upload Python Package
+
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  push:
+    branches: [ "main" ]
+
+jobs:
+  deploy:
+    name: Set up java class 
+    runs-on: ubuntu-latest
+    #container: openjdk:24-slim-bullseye
+    steps:
+    - uses: actions/checkout@v4
+    - name: Install Java
+      uses: actions/setup-java@v3
+      with:
+        java-version: 17
+        distribution: 'temurin'
+    - name: Set up Java class
+      run: |
+        echo Set up Java class
+        java --version
+        dir
+        javac Hello.java        
+    - name: Upload artifact java class  
+      uses: actions/upload-artifact@v4
+      with:
+        name: dist-without-markdown
+        path: |
+          dist
+          !dist/**/*.md
+
+  run:
+    name: Run Java script
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+    - name: Download artifact java class 
+      uses: actions/download-artifact@v4
+      with:
+          name: dist-without-markdown
+    - name: Run java class
+      run: |
+        dir
+        java Hello
+        echo "Compile complete."
