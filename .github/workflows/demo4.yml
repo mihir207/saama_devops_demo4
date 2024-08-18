@@ -29,14 +29,14 @@ jobs:
       run: |
         echo Set up Java class
         java --version
-        dir
         javac Hello.java        
+        dir
     - name: Upload artifact java class  
       uses: actions/upload-artifact@v4
       with:
         name: dist-without-markdown
         path: |
-          Hello.java
+          Hello.class
           dist
           !dist/**/*.md
 
